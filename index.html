@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PostCraft Studio | Social Media Post Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/responsive.css" />
+</head>
+<body>
+  <header class="top-toolbar">
+    <div class="toolbar-section toolbar-left">
+      <div class="brand">
+        <span class="brand-logo">&#x1F4DD;</span>
+        <div>
+          <p class="brand-title">PostCraft Studio</p>
+          <p class="brand-subtitle">Social media post designer</p>
+        </div>
+      </div>
+      <div class="toolbar-group">
+        <label for="platform-select" class="sr-only">Platform size</label>
+        <select id="platform-select" class="select-control"></select>
+        <span id="canvas-size-display" class="canvas-size-display">1080 x 1080</span>
+      </div>
+    </div>
+
+    <div class="toolbar-section toolbar-center">
+      <button class="icon-button" id="undo-btn" type="button" data-tooltip="Undo (Ctrl+Z)"><i class="fa-solid fa-rotate-left"></i></button>
+      <button class="icon-button" id="redo-btn" type="button" data-tooltip="Redo (Ctrl+Y)"><i class="fa-solid fa-rotate-right"></i></button>
+      <button class="icon-button" id="clear-btn" type="button" data-tooltip="Clear canvas"><i class="fa-solid fa-trash"></i></button>
+      <button class="icon-button" id="grid-toggle-btn" type="button" data-tooltip="Toggle grid"><i class="fa-solid fa-border-all"></i></button>
+      <button class="icon-button" id="zoom-in-btn" type="button" data-tooltip="Zoom in"><i class="fa-solid fa-search-plus"></i></button>
+      <button class="icon-button" id="zoom-out-btn" type="button" data-tooltip="Zoom out"><i class="fa-solid fa-search-minus"></i></button>
+      <button class="icon-button" id="reset-zoom-btn" type="button" data-tooltip="Reset zoom"><i class="fa-solid fa-arrows-rotate"></i></button>
+    </div>
+
+    <div class="toolbar-section toolbar-right">
+      <div class="export-dropdown">
+        <button class="primary-button" id="export-btn" type="button"><i class="fa-solid fa-file-export"></i> Export</button>
+        <div class="dropdown-menu" id="export-menu">
+          <button class="dropdown-item" id="export-png" type="button">Download PNG</button>
+          <button class="dropdown-item" id="export-jpg" type="button">Download JPG</button>
+          <button class="dropdown-item" id="export-pdf" type="button">Download PDF</button>
+          <button class="dropdown-item" id="copy-clipboard" type="button">Copy to Clipboard</button>
+        </div>
+      </div>
+      <button class="primary-button" id="save-btn" type="button"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+      <button class="secondary-button" id="load-btn" type="button"><i class="fa-solid fa-folder-open"></i> Load</button>
+      <button class="icon-button" id="right-panel-toggle" type="button" data-tooltip="Toggle properties"><i class="fa-solid fa-sliders"></i></button>
+    </div>
+  </header>
+
+  <div class="app-layout">
+    <aside class="side-panel left-panel" id="left-panel">
+      <div class="panel-tabs">
+        <button class="tab-button active" data-tab="templates-tab">Templates</button>
+        <button class="tab-button" data-tab="elements-tab">Elements</button>
+        <button class="tab-button" data-tab="text-tab">Text</button>
+        <button class="tab-button" data-tab="background-tab">Background</button>
+        <button class="tab-button" data-tab="upload-tab">Upload</button>
+      </div>
+
+      <div class="tab-panels">
+        <section class="tab-panel active" id="templates-tab">
+          <div class="panel-heading">
+            <h2>Templates</h2>
+            <p>Select a starting layout</p>
+          </div>
+          <div class="template-grid" id="template-grid"></div>
+        </section>
+
+        <section class="tab-panel" id="elements-tab">
+          <div class="panel-heading">
+            <h2>Shapes & art</h2>
+          </div>
+          <div class="button-grid">
+            <button class="tool-button" id="add-rect"><i class="fa-solid fa-square"></i> Rectangle</button>
+            <button class="tool-button" id="add-circle"><i class="fa-solid fa-circle"></i> Circle</button>
+            <button class="tool-button" id="add-triangle"><i class="fa-solid fa-play"></i> Triangle</button>
+            <button class="tool-button" id="add-star"><i class="fa-solid fa-star"></i> Star</button>
+            <button class="tool-button" id="add-line"><i class="fa-solid fa-minus"></i> Line</button>
+            <button class="tool-button" id="add-arrow"><i class="fa-solid fa-arrow-up-right-dots"></i> Arrow</button>
+          </div>
+          <div class="control-group">
+            <label for="shape-color-picker">Shape color</label>
+            <input id="shape-color-picker" type="color" value="#7c3aed" />
+          </div>
+          <div class="control-group">
+            <label for="shape-opacity-slider">Opacity</label>
+            <input id="shape-opacity-slider" type="range" min="0.2" max="1" step="0.05" value="1" />
+          </div>
+        </section>
+
+        <section class="tab-panel" id="text-tab">
+          <div class="panel-heading">
+            <h2>Text</h2>
+          </div>
+          <div class="button-grid">
+            <button class="tool-button" id="add-heading"><i class="fa-solid fa-heading"></i> Heading</button>
+            <button class="tool-button" id="add-subheading"><i class="fa-solid fa-text-height"></i> Subheading</button>
+            <button class="tool-button" id="add-body-text"><i class="fa-solid fa-font"></i> Body Text</button>
+          </div>
+          <div class="control-group">
+            <label for="font-family-select">Font family</label>
+            <select id="font-family-select" class="select-control">
+              <option value="Poppins, sans-serif">Poppins</option>
+              <option value="Inter, sans-serif">Inter</option>
+              <option value="Playfair Display, serif">Playfair Display</option>
+              <option value="Montserrat, sans-serif">Montserrat</option>
+              <option value="Arial, sans-serif">Arial</option>
+            </select>
+          </div>
+          <div class="control-row">
+            <div class="control-group half">
+              <label for="font-size-input">Font size</label>
+              <input id="font-size-input" type="number" min="12" max="120" value="36" />
+            </div>
+            <div class="control-group half">
+              <label for="letter-spacing-slider">Letter spacing</label>
+              <input id="letter-spacing-slider" type="range" min="0" max="10" step="0.5" value="0" />
+            </div>
+          </div>
+          <div class="control-row">
+            <div class="control-group half">
+              <label for="line-height-slider">Line height</label>
+              <input id="line-height-slider" type="range" min="1" max="2.5" step="0.1" value="1.2" />
+            </div>
+            <div class="control-group half">
+              <label for="text-color-picker">Text color</label>
+              <input id="text-color-picker" type="color" value="#ffffff" />
+            </div>
+          </div>
+          <div class="button-grid small">
+            <button class="icon-button" id="text-bold"><i class="fa-solid fa-bold"></i></button>
+            <button class="icon-button" id="text-italic"><i class="fa-solid fa-italic"></i></button>
+            <button class="icon-button" id="text-underline"><i class="fa-solid fa-underline"></i></button>
+            <button class="icon-button" id="text-align-left"><i class="fa-solid fa-align-left"></i></button>
+            <button class="icon-button" id="text-align-center"><i class="fa-solid fa-align-center"></i></button>
+            <button class="icon-button" id="text-align-right"><i class="fa-solid fa-align-right"></i></button>
+            <button class="icon-button" id="text-shadow-toggle" type="button"><i class="fa-solid fa-text-shadow"></i></button>
+          </div>
+        </section>
+
+        <section class="tab-panel" id="background-tab">
+          <div class="panel-heading">
+            <h2>Background</h2>
+          </div>
+          <div class="control-group">
+            <label for="bg-color-picker">Solid color</label>
+            <input id="bg-color-picker" type="color" value="#ffffff" />
+          </div>
+          <div class="control-group">
+            <label>Gradient builder</label>
+            <div class="gradient-controls">
+              <input class="gradient-color" id="gradient-color-1" type="color" value="#7c3aed" />
+              <input class="gradient-color" id="gradient-color-2" type="color" value="#1e293b" />
+            </div>
+            <select id="gradient-direction" class="select-control">
+              <option value="horizontal">Horizontal</option>
+              <option value="vertical">Vertical</option>
+              <option value="diagonal">Diagonal</option>
+            </select>
+            <button class="secondary-button" id="apply-gradient">Apply gradient</button>
+          </div>
+          <div class="control-group">
+            <label for="bg-image-upload">Upload image</label>
+            <input id="bg-image-upload" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml" />
+          </div>
+          <div class="control-group">
+            <label for="bg-fit-select">Background fit</label>
+            <select id="bg-fit-select" class="select-control">
+              <option value="cover">Cover</option>
+              <option value="contain">Contain</option>
+              <option value="stretch">Stretch</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label for="bg-opacity-slider">Background opacity</label>
+            <input id="bg-opacity-slider" type="range" min="0" max="1" step="0.05" value="1" />
+          </div>
+        </section>
+
+        <section class="tab-panel" id="upload-tab">
+          <div class="panel-heading">
+            <h2>Upload assets</h2>
+          </div>
+          <div class="upload-dropzone" id="upload-dropzone">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <p>Drag & drop an image, logo, or sticker</p>
+            <p>PNG, JPG, SVG, WEBP</p>
+          </div>
+          <div class="control-group">
+            <label for="asset-upload-input">Select file</label>
+            <input id="asset-upload-input" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml" />
+          </div>
+        </section>
+      </div>
+    </aside>
+
+    <main class="canvas-pane">
+      <div class="canvas-toolbar">
+        <div class="canvas-status"><span id="canvas-platform-label">Instagram Post</span> • <span id="canvas-dimensions-label">1080 x 1080</span></div>
+      </div>
+      <div class="canvas-area" id="canvas-area">
+        <div class="ruler horizontal-ruler"></div>
+        <div class="ruler vertical-ruler"></div>
+        <div class="canvas-wrapper" id="canvas-wrapper">
+          <canvas id="main-canvas" width="1080" height="1080"></canvas>
+          <div class="grid-overlay" id="grid-overlay"></div>
+        </div>
+      </div>
+    </main>
+
+    <aside class="side-panel right-panel" id="right-panel">
+      <div class="panel-heading panel-heading-small">
+        <h2>Properties</h2>
+        <p id="selection-summary">Select an element to edit</p>
+      </div>
+      <div class="properties-panel" id="properties-panel">
+        <div class="property-section" id="property-text">
+          <h3>Text Properties</h3>
+          <div class="control-group">
+            <label for="prop-font-family">Font family</label>
+            <select id="prop-font-family" class="select-control"></select>
+          </div>
+          <div class="control-row">
+            <div class="control-group half">
+              <label for="prop-font-size">Font size</label>
+              <input id="prop-font-size" type="number" min="12" max="120" />
+            </div>
+            <div class="control-group half">
+              <label for="prop-letter-spacing">Letter spacing</label>
+              <input id="prop-letter-spacing" type="range" min="0" max="10" step="0.5" />
+            </div>
+          </div>
+          <div class="control-row">
+            <div class="control-group half">
+              <label for="prop-line-height">Line height</label>
+              <input id="prop-line-height" type="range" min="1" max="2.5" step="0.1" />
+            </div>
+            <div class="control-group half">
+              <label for="prop-text-color">Color</label>
+              <input id="prop-text-color" type="color" />
+            </div>
+          </div>
+          <div class="button-grid small">
+            <button class="icon-button" id="prop-bold" type="button"><i class="fa-solid fa-bold"></i></button>
+            <button class="icon-button" id="prop-italic" type="button"><i class="fa-solid fa-italic"></i></button>
+            <button class="icon-button" id="prop-underline" type="button"><i class="fa-solid fa-underline"></i></button>
+            <button class="icon-button" id="prop-align-left" type="button"><i class="fa-solid fa-align-left"></i></button>
+            <button class="icon-button" id="prop-align-center" type="button"><i class="fa-solid fa-align-center"></i></button>
+            <button class="icon-button" id="prop-align-right" type="button"><i class="fa-solid fa-align-right"></i></button>
+            <button class="icon-button" id="prop-shadow-toggle" type="button"><i class="fa-solid fa-text-shadow"></i></button>
+          </div>
+          <div class="control-group">
+            <label for="prop-opacity">Opacity</label>
+            <input id="prop-opacity" type="range" min="0" max="1" step="0.05" />
+          </div>
+          <div class="shadow-controls hidden" id="prop-shadow-controls">
+            <div class="control-group">
+              <label for="prop-shadow-color">Shadow color</label>
+              <input id="prop-shadow-color" type="color" />
+            </div>
+            <div class="control-row">
+              <div class="control-group half">
+                <label for="prop-shadow-blur">Blur</label>
+                <input id="prop-shadow-blur" type="range" min="0" max="50" step="1" />
+              </div>
+              <div class="control-group half">
+                <label for="prop-shadow-offset-x">Offset X</label>
+                <input id="prop-shadow-offset-x" type="number" min="-50" max="50" value="0" />
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="prop-shadow-offset-y">Offset Y</label>
+              <input id="prop-shadow-offset-y" type="number" min="-50" max="50" value="0" />
+            </div>
+          </div>
+        </div>
+
+        <div class="property-section hidden" id="property-shape">
+          <h3>Shape Properties</h3>
+          <div class="control-row">
+            <div class="control-group half">
+              <label for="prop-fill-color">Fill</label>
+              <input id="prop-fill-color" type="color" />
+            </div>
+            <div class="control-group half">
+              <label for="prop-stroke-color">Stroke</label>
+              <input id="prop-stroke-color" type="color" />
+            </div>
+          </div>
+          <div class="control-row">
+            <div class="control-group half">
+              <label for="prop-stroke-width">Stroke width</label>
+              <input id="prop-stroke-width" type="number" min="0" max="20" value="0" />
+            </div>
+            <div class="control-group half">
+              <label for="prop-radius">Border radius</label>
+              <input id="prop-radius" type="number" min="0" max="200" value="0" />
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="prop-shape-opacity">Opacity</label>
+            <input id="prop-shape-opacity" type="range" min="0" max="1" step="0.05" />
+          </div>
+          <div class="control-group">
+            <button class="secondary-button" id="prop-shape-shadow-toggle" type="button"><i class="fa-solid fa-shadow"></i> Toggle Shadow</button>
+          </div>
+        </div>
+
+        <div class="property-section hidden" id="property-image">
+          <h3>Image Properties</h3>
+          <div class="control-group">
+            <label for="prop-image-opacity">Opacity</label>
+            <input id="prop-image-opacity" type="range" min="0" max="1" step="0.05" />
+          </div>
+          <div class="control-row">
+            <div class="control-group half">
+              <button class="secondary-button" id="prop-flip-h" type="button">Flip H</button>
+            </div>
+            <div class="control-group half">
+              <button class="secondary-button" id="prop-flip-v" type="button">Flip V</button>
+            </div>
+          </div>
+          <div class="control-row">
+            <div class="control-group half">
+              <label for="prop-brightness">Brightness</label>
+              <input id="prop-brightness" type="range" min="-100" max="100" step="1" value="0" />
+            </div>
+            <div class="control-group half">
+              <label for="prop-contrast">Contrast</label>
+              <input id="prop-contrast" type="range" min="-100" max="100" step="1" value="0" />
+            </div>
+          </div>
+          <div class="control-group">
+            <button class="secondary-button" id="prop-image-grayscale" type="button">Toggle Grayscale</button>
+          </div>
+        </div>
+
+        <div class="property-section" id="property-actions">
+          <h3>Layer & Actions</h3>
+          <div class="button-grid small">
+            <button class="icon-button secondary" id="prop-duplicate" type="button" data-tooltip="Duplicate element"><i class="fa-solid fa-copy"></i></button>
+            <button class="icon-button secondary" id="prop-delete" type="button" data-tooltip="Delete element"><i class="fa-solid fa-trash"></i></button>
+            <button class="icon-button secondary" id="prop-bring-front" type="button" data-tooltip="Bring to front"><i class="fa-solid fa-arrow-up"></i></button>
+            <button class="icon-button secondary" id="prop-send-back" type="button" data-tooltip="Send to back"><i class="fa-solid fa-arrow-down"></i></button>
+            <button class="icon-button secondary" id="prop-bring-forward" type="button" data-tooltip="Bring forward"><i class="fa-solid fa-layer-group"></i></button>
+            <button class="icon-button secondary" id="prop-send-backward" type="button" data-tooltip="Send backward"><i class="fa-solid fa-layer-minus"></i></button>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/canvas.js"></script>
+  <script src="assets/js/templates.js"></script>
+  <script src="assets/js/elements.js"></script>
+  <script src="assets/js/export.js"></script>
+  <script src="assets/js/toolbar.js"></script>
+</body>
+</html>
